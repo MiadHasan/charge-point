@@ -5,8 +5,10 @@ import websockets
 
 
 from ocpp.v16 import ChargePoint as cp
-from ocpp.v16 import call
-from ocpp.v16.enums import RegistrationStatus
+from ocpp.v16 import call, call_result
+from ocpp.v16.enums import RegistrationStatus, Action, ClearChargingProfileStatus
+from ocpp.routing import on
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -22,6 +24,16 @@ class ChargePoint(cp):
         if response.status == RegistrationStatus.accepted:
             print("Connected to central system.")
 
+    @on(Action.ClearChargingProfile)
+    async def clear_charging_profile(self, connector_id: int, **kwargs):
+        logging.info(
+            "Clear charging profile for connector: %d",
+            connector_id
+        )
+        print("hello")
+        return call_result.ClearChargingProfilePayload(
+            status=ClearChargingProfileStatus.accepted
+        )
 
 async def main():
     async with websockets.connect(
