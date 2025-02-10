@@ -24,5 +24,7 @@ async def main():
     # Start the WebSocket client
     await start_websocket_client()
 
+    # await asyncio.wait([asyncio.create_task(run_http_server(cp_instance)), asyncio.create_task(await start_websocket_client())])
+
 if __name__ == "__main__":
     asyncio.run(main())
